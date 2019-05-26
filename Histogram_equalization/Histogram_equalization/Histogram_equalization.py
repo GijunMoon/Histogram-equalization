@@ -1,0 +1,26 @@
+#-*- coding:utf-8 -*-
+# 테스트
+import cv2
+import numpy as np
+from matplotlib import pyplot as plt
+
+
+img = cv2.imread('images/hist_unequ.jpg');
+
+hist, bins = np.histogram(img.flatten() , 256,[0,256])
+
+cdf = hist.cumsum()
+
+# cdf의 값이 0인 경우는 mask처리 후 numpy 계산 제외
+cdf_m = np.ma.masked_equal(cdf,0) #cdf(array)에서 0인 부분을 마스크로 제외
+
+#History Equalization 공식
+cdf_m = (cdf_m - cdf_m.min())*255/(cdf_m.max()-cdf_m.min())
+
+# mask처리를 했던 부분을 다시 0으로 변환
+cdf = np.ma.filled(cdf_m,0).astype('uint8')
+
+img2 = cdf[img]
+plt.subplot(121),plt.imshow(img),plt.title('Original')
+plt.subplot(122),plt.imshow(img2),plt.title('Equalization')
+plt.show()
