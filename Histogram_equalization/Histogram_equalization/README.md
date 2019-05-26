@@ -9,4 +9,4 @@ increases the contrast of many images, when the usable data of the image is repr
 
 # Result
 
-![result](./readmeimg/result.png)
+![result](./readmeimg/result.PNG)
